@@ -111,6 +111,8 @@ public class PalettePlayerController implements Initializable {
     private Media filmMedia;
     private MediaPlayer filmPlayer;
     private double w, h;
+    @FXML
+    private Label fps;
     public void setW(double w) {
         this.w = w - 300;
     }
@@ -213,6 +215,7 @@ public class PalettePlayerController implements Initializable {
         String filmPath = filmFile.getAbsolutePath();
         filmPath = filmPath.replace("\\", "/");
 
+        
         filmMedia = new Media(new File(filmPath).toURI().toString());
         if (filmPlayer != null) {
             filmPlayer.stop();
@@ -220,6 +223,7 @@ public class PalettePlayerController implements Initializable {
 
         filmPlayer = new MediaPlayer(filmMedia);
         filmPlayer.setAutoPlay(true);
+        filmPlayer.setRate(1.0);
         paletteMediaView.setMediaPlayer(filmPlayer);
         paletteMediaView.setPreserveRatio(true);
         mediaController.setGlyphName("PAUSE");
@@ -264,6 +268,7 @@ public class PalettePlayerController implements Initializable {
             
             filmPlayer.currentTimeProperty().addListener((ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) -> {
                 mediaSeekBar.setValue(newValue.toSeconds());
+                fps.setText(""+newValue.toSeconds());
                 
                 if (newValue.equals(filmPlayer.getMedia().getDuration())) {
                     mediaController.setGlyphName("PLAY_CIRCLE");
@@ -518,18 +523,18 @@ public class PalettePlayerController implements Initializable {
     }
 
     private Image getFilma() throws FrameGrabber.Exception {
-        OpenCVFrameConverter.ToIplImage converterToIplImage = new OpenCVFrameConverter.ToIplImage();
         FFmpegFrameGrabber mFFmpegFrameGrabber = new FFmpegFrameGrabber(filmFile);
         
         mFFmpegFrameGrabber.start();
         double rate = mFFmpegFrameGrabber.getFrameRate();
+        //double rate = filmPlayer.getCurrentRate();
         //System.err.println("seekbarValue "+mediaSeekBar.getValue());
-        mFFmpegFrameGrabber.setFrameNumber((int)(rate*mediaSeekBar.getValue()));
-        //System.err.println("Frame "+(rate*mediaSeekBar.getValue()));
+        filmPlayer.getCurrentTime().toSeconds();
+        mFFmpegFrameGrabber.setFrameNumber((int)(rate*Double.parseDouble(fps.getText())-5.33));
+        //System.err.println("render frame number"+(Double.parseDouble(fps.getText())-5.33));
         Frame f = mFFmpegFrameGrabber.grabImage();
         JavaFXFrameConverter fXFrameConverter = new JavaFXFrameConverter();
         Image img = fXFrameConverter.convert(f);
-        //deprecated return SwingFXUtils.toFXImage(bI, null);
         return img;
     }
     private BufferedImage getBufferedFilma() throws FrameGrabber.Exception {
@@ -600,6 +605,7 @@ public class PalettePlayerController implements Initializable {
             //stage.setTitle("My New Stage Title");
             mStage.setScene(new Scene(root, 700, 550));
             palettePreviewController.setPreview(getFilma());
+            System.err.println("preview frame: "+mediaSeekBar.getValue());
             mStage.show();
             // Hide this current window (if this is what you want)
             //((Node)(event.getSource())).getScene().getWindow().hide();
