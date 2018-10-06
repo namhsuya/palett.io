@@ -580,7 +580,8 @@ public class PalettePlayerController implements Initializable {
     @FXML
     private void chooseImage(MouseEvent event) {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*.png", "*.jpg", "*.jpeg", ".bmp"));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.bmp");
+        chooser.getExtensionFilters().add(extFilter);
         filmFile = chooser.showOpenDialog(null);
 
         String filmPath = filmFile.getAbsolutePath();
@@ -652,8 +653,6 @@ public class PalettePlayerController implements Initializable {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
