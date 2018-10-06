@@ -15,7 +15,10 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -241,50 +244,63 @@ public class PalettePlayerController implements Initializable {
                 }
                 BufferedImage img = getImage(paletteMediaView);
                 //BufferedImage img = getBufferedFilma();
-                MMCQ.CMap result = ColorThief.getColorMap(img, 5);
-                filmpalette.colorthief.MMCQ.VBox dominantColor = result.vboxes.get(0);
+                //MMCQ.CMap result = ColorThief.getColorMap(img, 5);
+                //result.vboxes.get(0);
                 //System.out.println("result: "+dominantColor);
                 
+                
+                
+                
+                MMCQ.CMap result = ColorThief.getColorMap(img, 11);                
+                
+                filmpalette.colorthief.MMCQ.VBox dominantColor = result.vboxes.get(0);
                 int[] rgb = dominantColor.avg(false);
                 String rgbHexString = createRGBHexString(rgb);
                 fPalette[0] = Color.valueOf(rgbHexString);
                 domC.setStyle("-fx-background-color:" + rgbHexString + "; ");
-                result = ColorThief.getColorMap(img, 10);
-                dominantColor = result.vboxes.get(0);
+                
+                dominantColor = result.vboxes.get(9);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[1] = Color.valueOf(rgbHexString);
                 c1.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(1);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[2] = Color.valueOf(rgbHexString);
                 c2.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(2);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[3] = Color.valueOf(rgbHexString);
                 c3.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(3);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[4] = Color.valueOf(rgbHexString);
                 c4.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(4);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[5] = Color.valueOf(rgbHexString);
                 c5.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(5);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[6] = Color.valueOf(rgbHexString);
                 c6.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(6);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[7] = Color.valueOf(rgbHexString);
                 c7.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
                 dominantColor = result.vboxes.get(7);
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
@@ -296,6 +312,17 @@ public class PalettePlayerController implements Initializable {
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[9] = Color.valueOf(rgbHexString);
                 c9.setStyle("-fx-background-color:" + rgbHexString + "; ");
+                
+                Map<Double, Color> brightnessMap = new HashMap<>();
+                for (Color color : fPalette) {
+                    brightnessMap.put(color.getBrightness(), color);
+                }
+                int it = 0;
+                Map<Double, Color> sortedMap = new TreeMap<>(brightnessMap);
+                for (Map.Entry<Double, Color> entry : sortedMap.entrySet()) {                    
+                    fPalette[it]=entry.getValue();
+                    it++;
+                }
 
             });
             
@@ -343,9 +370,7 @@ public class PalettePlayerController implements Initializable {
         
         
         Canvas mCanvas = new Canvas(fW+10, fH+165);
-        //Image filma = SwingFXUtils.toFXImage(film, null);
         Image filma = getFilma();
-        //RenderFrame renderer = new RenderFrame((int)fW, (int)fH, fPalette, film);
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -607,6 +632,17 @@ public class PalettePlayerController implements Initializable {
                 rgb = dominantColor.avg(false);
                 rgbHexString = createRGBHexString(rgb);
                 fPalette[9] = Color.valueOf(rgbHexString);
+                
+                Map<Double, Color> brightnessMap = new HashMap<>();
+                for (Color color : fPalette) {
+                    brightnessMap.put(color.getBrightness(), color);
+                }
+                int it = 0;
+                Map<Double, Color> sortedMap = new TreeMap<>(brightnessMap);
+                for (Map.Entry<Double, Color> entry : sortedMap.entrySet()) {                    
+                    fPalette[it]=entry.getValue();
+                    it++;
+                }
 
 
         
