@@ -198,7 +198,7 @@ public class PalettePlayerController implements Initializable {
     @FXML
     private void chooseFile(MouseEvent event){
         FileChooser chooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.flv", "*.avi", "*.mkv");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.flv", "*.avi");
         chooser.getExtensionFilters().add(extFilter);
         filmFile = chooser.showOpenDialog(null);
 
