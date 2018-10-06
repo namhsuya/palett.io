@@ -37,8 +37,8 @@ public class FilmPalette extends Application {
         });
         //move around here
         root.setOnMouseDragged((MouseEvent event) -> {
-            stage.setX(event.getScreenX() - xOffset);
-            stage.setY(event.getScreenY() - yOffset);
+            //stage.setX(event.getScreenX() - xOffset);
+            //stage.setY(event.getScreenY() - yOffset);
         });
         
         
