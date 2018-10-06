@@ -68,7 +68,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_RIGHT" onMouseClicked="#nextFrame" size="26" styleClass="icons" />
                </children>
             </HBox>
-            <JFXSlider fx:id="mediaSeekBar" blockIncrement="1.0" focusTraversable="false" layoutX="130.0" layoutY="30.0" minorTickCount="1" prefHeight="14.0" value="1.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="56.0" />
+            <JFXSlider fx:id="mediaSeekBar" blockIncrement="1.0" focusTraversable="false" layoutX="130.0" layoutY="30.0" minorTickCount="1" prefHeight="14.0" value="0.001" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="56.0" />
             <FontAwesomeIconView fill="WHITE" glyphName="DOWNLOAD" layoutX="696.0" layoutY="47.0" onMouseClicked="#renderOutput" size="30" styleClass="icons" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -55,6 +56,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import javax.imageio.ImageIO;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
@@ -117,6 +119,7 @@ public class PalettePlayerController implements Initializable {
     private File filmFile;
     private final Color[] fPalette = new Color[10];
     final Clipboard clipboard = Clipboard.getSystemClipboard();
+    private StringConverter<Double> sc;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -237,9 +240,26 @@ public class PalettePlayerController implements Initializable {
             double sF[] = getScaledDimensions(filmWidth, filmHeight);
             paletteMediaView.setFitWidth(sF[0]);
             paletteMediaView.setFitHeight(sF[1]);
+            
+            sc = new StringConverter<Double>() {
+                @Override
+                public String toString(Double object) {
+                    long seconds = object.longValue();
+                    long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+                    long remainingseconds = seconds - TimeUnit.MINUTES.toSeconds(minutes);
+                    return String.format("%02d", minutes) + ":" + String.format("%02d", remainingseconds);
+                }
 
+                @Override
+                public Double fromString(String string) {
+                    return null;
+                }
+            };
+            mediaSeekBar.setLabelFormatter(sc);
+            
             filmPlayer.currentTimeProperty().addListener((ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) -> {
                 mediaSeekBar.setValue(newValue.toSeconds());
+                
                 if (newValue.equals(filmPlayer.getMedia().getDuration())) {
                     mediaController.setGlyphName("PLAY_CIRCLE");
                 }
