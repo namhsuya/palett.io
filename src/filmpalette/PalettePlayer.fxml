@@ -34,7 +34,7 @@
                   </VBox>
                </center>
                <top>
-                  <FontAwesomeIconView fill="WHITE" glyphName="EYE" onMouseClicked="#showPreview" size="22" styleClass="icons" BorderPane.alignment="CENTER_RIGHT" />
+                  <FontAwesomeIconView disable="true" fill="WHITE" glyphName="EYE" onMouseClicked="#showPreview" opacity="0.0" size="22" styleClass="icons" BorderPane.alignment="CENTER_RIGHT" />
                </top>
             </BorderPane>
          </children>
@@ -51,21 +51,25 @@
       </HBox>
       <AnchorPane prefHeight="75.0" prefWidth="745.0" styleClass="palette-panel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="140.0">
          <children>
-            <FontAwesomeIconView fill="WHITE" glyphName="FOLDER_OPEN" layoutX="16.0" layoutY="48.0" onMouseClicked="#chooseFile" size="30" styleClass="icons" AnchorPane.leftAnchor="16.0" />
-            <HBox alignment="CENTER" layoutX="64.0" layoutY="15.0" spacing="10.0" AnchorPane.leftAnchor="64.0">
+            <VBox alignment="CENTER" layoutX="16.0" layoutY="25.714284896850586" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
                <children>
-                  <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" onMouseClicked="#prevFrame" size="30" styleClass="icons" />
-                  <FontAwesomeIconView fx:id="mediaController" fill="WHITE" glyphName="PLAY_CIRCLE" onMouseClicked="#controlMedia" size="44" styleClass="icons">
+                  <FontAwesomeIconView fill="WHITE" glyphName="VIDEO_CAMERA" onMouseClicked="#chooseFile" size="24" styleClass="icons" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="IMAGE" onMouseClicked="#chooseImage" size="24" styleClass="icons" />
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" layoutX="64.0" layoutY="15.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="15.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_LEFT" onMouseClicked="#prevFrame" size="26" styleClass="icons" />
+                  <FontAwesomeIconView fx:id="mediaController" fill="WHITE" glyphName="PLAY_CIRCLE" onMouseClicked="#controlMedia" size="30" styleClass="icons">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </FontAwesomeIconView>
-                  <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_RIGHT" onMouseClicked="#nextFrame" size="30" styleClass="icons" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="CHEVRON_RIGHT" onMouseClicked="#nextFrame" size="26" styleClass="icons" />
                </children>
             </HBox>
-            <JFXSlider fx:id="mediaSeekBar" blockIncrement="1.0" focusTraversable="false" layoutX="130.0" layoutY="30.0" minorTickCount="1" prefHeight="14.0" value="1.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="56.0" />
-            <FontAwesomeIconView fill="WHITE" glyphName="SHARE" layoutX="696.0" layoutY="47.0" onMouseClicked="#renderOutput" size="30" styleClass="icons" AnchorPane.rightAnchor="10.0" />
-            <FontAwesomeIconView fill="WHITE" glyphName="IMAGE" layoutX="26.0" layoutY="58.0" onMouseClicked="#chooseImage" size="15" styleClass="icons" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="22.0" />
+            <JFXSlider fx:id="mediaSeekBar" blockIncrement="1.0" focusTraversable="false" layoutX="130.0" layoutY="30.0" minorTickCount="1" prefHeight="14.0" value="1.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="56.0" />
+            <FontAwesomeIconView fill="WHITE" glyphName="DOWNLOAD" layoutX="696.0" layoutY="47.0" onMouseClicked="#renderOutput" size="30" styleClass="icons" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
       <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" spacing="4.0" styleClass="palette-panel" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
