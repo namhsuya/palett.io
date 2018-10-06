@@ -38,6 +38,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -58,10 +59,14 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javax.imageio.ImageIO;
+import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
+import org.bytedeco.javacv.JavaFXFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 /**
  *
@@ -272,9 +277,9 @@ public class PalettePlayerController implements Initializable {
                 
                 
                 
-                MMCQ.CMap result = ColorThief.getColorMap(img, 11);                
-                
+                MMCQ.CMap result = ColorThief.getColorMap(img, 11);
                 filmpalette.colorthief.MMCQ.VBox dominantColor = result.vboxes.get(0);
+                
                 int[] rgb = dominantColor.avg(false);
                 String rgbHexString = createRGBHexString(rgb);
                 fPalette[0] = Color.valueOf(rgbHexString);
@@ -390,59 +395,64 @@ public class PalettePlayerController implements Initializable {
         
         
         
-        Canvas mCanvas = new Canvas(fW+10, fH+165);
-        Image filma = getFilma();
-        FileChooser fileChooser = new FileChooser();
+        try {
+            Canvas mCanvas = new Canvas(fW+10, fH+165);
+            Image filma = getFilma();
+            FileChooser fileChooser = new FileChooser();
+            
+            //Set extension filter
+            FileChooser.ExtensionFilter extFilter
+                    = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+            fileChooser.getExtensionFilters().add(extFilter);
+            
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(null);
+            
+            if(file != null){
+                try {
+                    WritableImage writableImage = new WritableImage((int)mCanvas.getWidth(), (int)mCanvas.getHeight());
+                    GraphicsContext gc = mCanvas.getGraphicsContext2D();
+                    gc.drawImage(filma, 5, 5, fW, fH);
 
-        //Set extension filter
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(null);
-        
-        if(file != null){
-            try {
-                WritableImage writableImage = new WritableImage((int)mCanvas.getWidth(), (int)mCanvas.getHeight());
-                GraphicsContext gc = mCanvas.getGraphicsContext2D();
-                gc.drawImage(filma, 5, 5, fW, fH);
-                
-                double rectY = 5.0;
-                double rectX = 5.0;
-                double rectH = fH/10;
-                double rectW = fW/10;
-                
-                
-                for (int i = 0; i < 10; i++) {
-                    gc.setFill(fPalette[i]);
+                    
+                    double rectY = 5.0;
+                    double rectX = 5.0;
+                    double rectH = fH/10;
+                    double rectW = fW/10;
+                    
+                    
+                    for (int i = 0; i < 10; i++) {
+                        gc.setFill(fPalette[i]);
                         switch (i) {
-                        case 0:
-                            gc.fillRect(rectX, (int)fH+10, rectW-8, 150);
-                            break;
-                        case 9:
-                            gc.fillRect(rectX-4, (int)fH+10, rectW+4, 150);
-                            break;
-                        default:
-                            gc.fillRect(rectX-4, (int)fH+10, rectW-4, 150);
-                            break;
+                            case 0:
+                                gc.fillRect(rectX, (int)fH+10, rectW-8, 150);
+                                break;
+                            case 9:
+                                gc.fillRect(rectX-4, (int)fH+10, rectW+4, 150);
+                                break;
+                            default:
+                                gc.fillRect(rectX-4, (int)fH+10, rectW-4, 150);
+                                break;
+                        }
+                        
+                        //gc.fillRect(rectX, (int)fH+10, rectW, 150);
+                        //gc.fillRect((int)fW+10, rectY, 150, (int)(fH/10));
+                        rectX=(rectX+rectW);
+                        //rectY=(rectY+rectH);
                     }
                     
-                    //gc.fillRect(rectX, (int)fH+10, rectW, 150);
-                    //gc.fillRect((int)fW+10, rectY, 150, (int)(fH/10));
-                    rectX=(rectX+rectW);
-                    //rectY=(rectY+rectH);
-                }
-                
-                mCanvas.snapshot(null, writableImage);
-                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-                ImageIO.write(renderedImage, "png", file);
-                makeText((Stage)c1.getScene().getWindow(), "Image Saved", 3500, 500, 500);
-                //ImageIO.write(bI, "png", file);
-                //System.err.println("finalY: "+rectY+" fH: "+fH);
+                    mCanvas.snapshot(null, writableImage);
+                    RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                    ImageIO.write(renderedImage, "png", file);
+                    makeText((Stage)c1.getScene().getWindow(), "Image Saved", 3500, 500, 500);
+                    //ImageIO.write(bI, "png", file);
+                    //System.err.println("finalY: "+rectY+" fH: "+fH);
                 } catch (IOException ex) {
                     Logger.getLogger(PalettePlayerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PalettePlayerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -508,17 +518,19 @@ public class PalettePlayerController implements Initializable {
     }
 
     private Image getFilma() throws FrameGrabber.Exception {
+        OpenCVFrameConverter.ToIplImage converterToIplImage = new OpenCVFrameConverter.ToIplImage();
         FFmpegFrameGrabber mFFmpegFrameGrabber = new FFmpegFrameGrabber(filmFile);
         
         mFFmpegFrameGrabber.start();
         double rate = mFFmpegFrameGrabber.getFrameRate();
+        //System.err.println("seekbarValue "+mediaSeekBar.getValue());
         mFFmpegFrameGrabber.setFrameNumber((int)(rate*mediaSeekBar.getValue()));
-        System.err.println("Frame "+(rate*mediaSeekBar.getValue()));
-        Frame f = mFFmpegFrameGrabber.grab();
-        Java2DFrameConverter biConv = new Java2DFrameConverter();
-        
-        BufferedImage bI = biConv.getBufferedImage(f);
-        return SwingFXUtils.toFXImage(bI, null);
+        //System.err.println("Frame "+(rate*mediaSeekBar.getValue()));
+        Frame f = mFFmpegFrameGrabber.grabImage();
+        JavaFXFrameConverter fXFrameConverter = new JavaFXFrameConverter();
+        Image img = fXFrameConverter.convert(f);
+        //deprecated return SwingFXUtils.toFXImage(bI, null);
+        return img;
     }
     private BufferedImage getBufferedFilma() throws FrameGrabber.Exception {
         FFmpegFrameGrabber mFFmpegFrameGrabber = new FFmpegFrameGrabber(filmFile);
@@ -528,8 +540,8 @@ public class PalettePlayerController implements Initializable {
         mFFmpegFrameGrabber.setFrameNumber((int)(rate*mediaSeekBar.getValue()));
         Frame f = mFFmpegFrameGrabber.grab();
         Java2DFrameConverter biConv = new Java2DFrameConverter();
-        
         BufferedImage bI = biConv.getBufferedImage(f);
+        
         return bI;
     }
     
