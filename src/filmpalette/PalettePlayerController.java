@@ -23,7 +23,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -128,48 +127,57 @@ public class PalettePlayerController implements Initializable {
         });
         c1.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c1.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c1.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c2.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c2.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c2.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c3.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c3.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c3.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c4.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c4.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c4.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c5.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c5.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c5.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c6.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c6.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c6.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c7.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c7.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c7.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c8.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c8.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c8.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
         c9.setOnMouseClicked((MouseEvent event) -> {
             final ClipboardContent content = new ClipboardContent();
-            content.putString(domC.getStyle().substring(21, 28));
+            content.putString(c9.getStyle().substring(21, 28));
             clipboard.setContent(content);
+            makeText((Stage)c9.getScene().getWindow(), "Copied to clipboard", 3500, 500, 500);
         });
     }    
 
